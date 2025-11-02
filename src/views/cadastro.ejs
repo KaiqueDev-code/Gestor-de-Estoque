@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="/cadastro.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <main>
+    <div class="login-container move">
+      <div class="form-container">
+        <!-- Formulário de Login (fica oculto com .move) -->
+        <form class="form form-login" method="POST" action="/login">
+          <h1 class="form-title">Login</h1>
+          <div class="form-input-container">
+            <input class="form-input" type="email" name="email" placeholder="Email" required />
+            <input class="form-input" type="password" name="senha" placeholder="Senha" required />
+          </div>
+          <button class="form-button" type="submit">Entrar</button>
+          <a href="/cadastro">Não tem conta? Cadastre-se</a>
+        </form>
+        <!-- Formulário de Cadastro -->
+        <form class="form form-register" method="POST" action="/cadastro">
+          <h1 class="form-title">Cadastro</h1>
+          <div class="form-input-container">
+            <input class="form-input" type="text" name="nome" placeholder="Nome" required />
+            <input class="form-input" type="email" name="email" placeholder="Email" required />
+            <input class="form-input" type="password" name="senha" placeholder="Senha" required />
+          </div>
+          <button class="form-button" type="submit">Cadastrar</button>
+          <a href="/login">Já tem conta? Faça login</a>
+        </form>
+      </div>
+      <div class="overlay-container">
+        <div class="overlay">
+          <h1>Bem-vindo!</h1>
+          <p>Crie sua conta para acessar o sistema.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

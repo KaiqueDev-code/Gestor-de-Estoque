@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos</title>
+    <link rel="stylesheet" href="/homestyle.css">
+    <link rel="stylesheet" href="/pagina.css">
+</head>
+<body>
+    <header class="topo">
+        <h1 class="logo"></h1>
+        <nav class="menu">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/produtos.html">Produtos</a></li>
+                <li><a href="/relatorios.html">Relatórios</a></li>
+            </ul>
+        </nav>
+        <div class="usuario">
+            <img src="img/do-utilizador.png" alt="logo do usuario" class="icone" id="fotoUsuario">
+            <span class="nome">fulana</span>
+            <div class="menu-usuario" id="menuUsuario">
+                <a href="#perfil">Perfil</a>
+                <a href="#config">Configuração</a>
+                <a href="#logout">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="main">
+        <div class="sidebar">
+            <h3>Menu</h3>
+            <a href="/relatorios.html">Relatórios</a>
+            <a href="/produtos.html">Produtos</a>
+            <br>
+            <div class="separador"></div>
+        </div>
+        <div class="content">
+            <div class="caixa">
+                <div class="acoes">
+                    <button class="b" id="abrirModalIncluir"><i class="ba">Incluir + </i></button>
+                    <select name="seletorpagina" id="seletor">
+                        <option value="">5</option>
+                        <option value="">10</option>
+                        <option value="">20</option>
+                    </select>
+                    <input type="text" class="pesquisa" placeholder="Pesquisar de Produto">
+                </div>
+                <table class="tabela">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Produtos serão adicionados dinamicamente -->
+                    </tbody>
+                </table>
+                <div class="paginas">
+                    <button>1</button>
+                    <button>2</button>
+                    <button>3</button>
+                    <button>4</button>
+                </div>
+                <!-- Inclua aqui os modais de editar/incluir se desejar -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal de Incluir Produto -->
+    <div id="modalIncluir" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModalIncluir">&times;</span>
+            <h2>Incluir Produto</h2>
+            <form id="form-incluir">
+                <div class="group">
+                    <label for="nomeIncluir">Nome:</label>
+                    <input type="text" id="nomeIncluir" name="name" required>
+                </div>
+                <div class="group">
+                    <label for="quantidadeIncluir">Quantidade:</label>
+                    <input type="number" id="quantidadeIncluir" name="quantidade" required>
+                </div>
+                <div class="group">
+                    <label for="precoIncluir">Preço:</label>
+                    <input type="number" id="precoIncluir" name="preco" step="0.01" required>
+                </div>
+                <button type="submit" class="bota">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Editar Produto -->
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModal">&times;</span>
+            <h2>Editar Produto</h2>
+            <form id="form-editar">
+                <div class="group">
+                    <label for="nomeEditar">Nome:</label>
+                    <input type="text" id="nomeEditar" name="name" required>
+                </div>
+                <div class="group">
+                    <label for="quantidadeEditar">Quantidade:</label>
+                    <input type="number" id="quantidadeEditar" name="quantidade" required>
+                </div>
+                <div class="group">
+                    <label for="precoEditar">Preço:</label>
+                    <input type="number" id="precoEditar" name="precoEditar" step="0.01" required>
+                </div>
+                <button type="submit" class="bota">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="editar.js"></script>
+    <script>
+        function adicionarProdutoTabela(nome, quantidade, preco) {
+            const tabela = document.querySelector('.tabela tbody');
+            const novaLinha = document.createElement('tr');
+            novaLinha.innerHTML = `
+                <td>${nome}</td>
+                <td>${quantidade}</td>
+                <td>${parseFloat(preco).toFixed(2)}</td>
+                <td>
+                    <button class="btn btn-blue" onclick="editarProduto(this)">Editar</button>
+                    <button class="btn btn-red" onclick="excluirProduto(this)">Excluir</button>
+                </td>
+            `;
+            tabela.appendChild(novaLinha);
+        }
+    </script>
+</body>
+</html>

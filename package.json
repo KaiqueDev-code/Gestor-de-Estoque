@@ -1,0 +1,27 @@
+{
+  "name": "gestor-de-estoque",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gestorestoque25-wq/Gestor-de-Estoque.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gestorestoque25-wq/Gestor-de-Estoque/issues"
+  },
+  "homepage": "https://github.com/gestorestoque25-wq/Gestor-de-Estoque#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.2",
+    "mysql2": "^3.15.1"
+  }
+}

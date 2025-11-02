@@ -1,0 +1,56 @@
+{
+  "produtos": [
+    {
+      "id": 1,
+      "nome": "Notebook Dell",
+      "quantidade": 10,
+      "preco": 2500,
+      "categoria": "Eletrônicos"
+    },
+    {
+      "id": 2,
+      "nome": "Mouse Logitech",
+      "quantidade": 200,
+      "preco": 89.9,
+      "categoria": "Periféricos",
+      "dataModificacao": "2025-10-28T22:31:33.930Z"
+    },
+    {
+      "id": 3,
+      "nome": "Teclado Mecânico",
+      "quantidade": 20,
+      "preco": 299,
+      "categoria": "Periféricos"
+    },
+    {
+      "id": 4,
+      "nome": "Monitor 24\"",
+      "quantidade": 8,
+      "preco": 1,
+      "categoria": "Eletrônicos",
+      "dataModificacao": "2025-10-28T23:14:00.667Z"
+    },
+    {
+      "id": 5,
+      "nome": "pedro",
+      "quantidade": 20,
+      "preco": 20,
+      "categoria": "humano",
+      "dataCriacao": "2025-10-28T22:33:08.953Z",
+      "dataModificacao": "2025-10-28T22:33:08.953Z"
+    },
+    {
+      "id": 6,
+      "nome": "qqc",
+      "quantidade": 2,
+      "preco": 8,
+      "categoria": "Geral",
+      "dataCriacao": "2025-10-29T23:03:36.117Z",
+      "dataModificacao": "2025-10-29T23:03:36.117Z"
+    }
+  ],
+  "nextId": 7,
+  "dataAtualizacao": "2025-10-29T23:03:36.118Z",
+  "totalProdutos": 6,
+  "valorTotalEstoque": 49384
+}

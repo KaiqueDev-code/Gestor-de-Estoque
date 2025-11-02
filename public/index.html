@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="/homestyle.css">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Gestor de Estoque</title>
+</head>
+
+<body>
+    <header class="topo">
+        <h1 class="logo">Gestor de Estoque</h1>
+        <nav class="menu">
+            <ul>
+                <li><a href="#" class="nav-link" data-page="dashboard">Home</a></li>
+                <li><a href="#" class="nav-link" data-page="produtos">Produtos</a></li>
+                <li><a href="#" class="nav-link" data-page="relatorios">Relatórios</a></li>
+            </ul>
+        </nav>
+
+        <div class="usuario" id="userProfile">
+            <img src="img/do-utilizador.png" alt="logo do usuario" class="icone" id="userPhoto">
+            <span class="nome" id="userName">fulana</span>
+            <div class="menu-usuario" id="userDropdown">
+                <a href="#" id="btnProfile"><i class="fas fa-user-edit"></i> Perfil</a>
+                <a href="#"><i class="fas fa-cog"></i> Configuração</a>
+                <a href="#" id="btnLogout"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="main">
+        <div class="sidebar">
+            <h3><i class="fas fa-bars"></i> Menu</h3>
+            <a href="#" class="menu-item active" data-page="dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="#" class="menu-item" data-page="relatorios">
+                <i class="fas fa-file-alt"></i> Relatórios
+            </a>
+            <a href="#" class="menu-item" data-page="produtos">
+                <i class="fas fa-boxes"></i> Produtos
+            </a>
+            <a href="#" class="menu-item" data-page="configuracoes">
+                <i class="fas fa-cog"></i> Configurações
+            </a>
+            <br>
+            <div class="separador"></div>
+        </div>
+
+        <div class="content">
+            <!-- Página Dashboard -->
+            <div id="dashboard-page" class="page active">
+                <div class="sessao">
+                    <h2>Dashboard</h2>
+                    <br>
+                    <div class="separador"></div>
+                    <br>
+                    <p><img src="img/silhueta-de-icone-de-casa.png" alt="casa" width="13px"> / Dashboard</p>
+                </div>
+
+                <div class="box">
+                    <div style="background: linear-gradient(45deg, #FF5370, #ff869a);" class="box-info">
+                        <div class="info-text">
+                            <h3>Total Vendido</h3>
+                            <p id="totalVendido">R$ 0,00</p>
+                        </div>
+                        <i class="fas fa-dollar-sign" style="font-size: 2rem; opacity: 0.7;"></i>
+                    </div>
+                    <div style="background: linear-gradient(45deg, #4099ff, #73b4ff);" class="box-info">
+                        <div class="info-text">
+                            <h3>Total Lucrado</h3>
+                            <p id="totalLucrado">R$ 0,00</p>
+                        </div>
+                        <i class="fas fa-chart-pie" style="font-size: 2rem; opacity: 0.7;"></i>
+                    </div>
+                    <div style="background: linear-gradient(45deg, #2ed8b6, #59e0c5);" class="box-info">
+                        <div class="info-text">
+                            <h3>Total de Produtos</h3>
+                            <p id="totalProdutos">0</p>
+                        </div>
+                        <i class="fas fa-boxes" style="font-size: 2rem; opacity: 0.7;"></i>
+                    </div>
+                    <div style="background: linear-gradient(45deg, #ffa726, #ffb74d);" class="box-info">
+                        <div class="info-text">
+                            <h3>Estoque Baixo</h3>
+                            <p id="totalEstoqueBaixo">0</p>
+                        </div>
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; opacity: 0.7;"></i>
+                    </div>
+                </div>
+
+                <!-- Tabela de Produtos com Estoque Baixo -->
+                <div class="caixa" style="width: 100%; margin-top: 30px;">
+                    <div class="sessao" style="margin-bottom: 20px;">
+                        <h3><i class="fas fa-exclamation-circle"></i> Produtos com Estoque Baixo</h3>
+                    </div>
+                    <div class="table-container">
+                        <table class="tabela">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Quantidade</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
+                            <tbody id="destaquesBody">
+                                <!-- Produtos com estoque baixo serão carregados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página Produtos -->
+            <div id="produtos-page" class="page">
+                <div class="sessao">
+                    <h2>Gestão de Produtos</h2>
+                    <br>
+                    <div class="separador"></div>
+                    <br>
+                    <p><img src="img/silhueta-de-icone-de-casa.png" alt="casa" width="13px"> / Produtos</p>
+                </div>
+
+                <div class="caixa">
+                    <div class="acoes">
+                        <button class="b" id="btnAddProduct">
+                            <i class="fas fa-plus"></i> Incluir +
+                        </button>
+
+                        <select name="itensPorPagina" id="itensPorPagina">
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                        </select>
+
+                        <input type="text" id="pesquisa" placeholder="Pesquisar Produto" class="pesquisa">
+                    </div>
+
+                    <table class="tabela">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Quantidade</th>
+                                <th>Preço</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaBody">
+                            <!-- Produtos serão carregados aqui via JavaScript -->
+                        </tbody>
+                    </table>
+
+                    <div class="paginas" id="paginacao">
+                        <!-- Paginação será gerada aqui via JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página Relatórios -->
+            <div id="relatorios-page" class="page">
+                <div class="sessao">
+                    <h2>Relatórios</h2>
+                    <br>
+                    <div class="separador"></div>
+                    <br>
+                    <p><img src="img/silhueta-de-icone-de-casa.png" alt="casa" width="13px"> / Relatórios</p>
+                </div>
+
+                <div class="box" style="flex-wrap: wrap;">
+                    <div class="report-card" style="background: linear-gradient(45deg, #667eea, #764ba2);">
+                        <div class="info-text">
+                            <h3><i class="fas fa-shopping-cart"></i> Vendas</h3>
+                            <p>Relatório detalhado de vendas</p>
+
+                            <!-- <button class="b" onclick="gerarRelatorioVendas()" style="margin-top: 10px;">
+                                <i class="fas fa-download"></i> Gerar Relatório
+                            </button> -->
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" style="background: linear-gradient(45deg, #f093fb, #f5576c);">
+                        <div class="info-text">
+                            <h3><i class="fas fa-box"></i> Estoque</h3>
+                            <p>Relatório de situação do estoque</p>
+                            <!-- <button class="b" onclick="gerarRelatorioEstoque()" style="margin-top: 10px;">
+                                <i class="fas fa-download"></i> Gerar Relatório
+                            </button> -->
+                        </div>
+                    </div>
+                    
+                    <div class="report-card" style="background: linear-gradient(45deg, #4facfe, #00f2fe);">
+                        <div class="info-text">
+                            <h3><i class="fas fa-chart-line"></i> Financeiro</h3>
+                            <p>Relatório financeiro mensal</p>
+                            <!-- <button class="b" onclick="gerarRelatorioFinanceiro()" style="margin-top: 10px;">
+                                <i class="fas fa-download"></i> Gerar Relatório
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="caixa" style="width: 100%; margin-top: 30px;">
+                    <div class="sessao" style="margin-bottom: 20px;">
+                        <h3><i class="fas fa-chart-bar"></i> Gráficos e Estatísticas</h3>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="chart-container">
+                            <h4>Vendas Mensais</h4>
+                            <canvas id="vendasChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Página Configurações -->
+            <div id="configuracoes-page" class="page">
+                <div class="sessao">
+                    <h2>Configurações</h2>
+                    <br>
+                    <div class="separador"></div>
+                    <br>
+                    <p><img src="img/silhueta-de-icone-de-casa.png" alt="casa" width="13px"> / Configurações</p>
+                </div>
+
+                <div class="caixa" style="width: 100%;">
+                    <div class="settings-grid">
+                        <div class="setting-card">
+                            <h3><i class="fas fa-user-cog"></i> Configurações de Usuário</h3>
+                            <div class="setting-option">
+                                <label>Notificações por email:</label>
+                                <input type="checkbox" id="notificacoesEmail" checked>
+                            </div>
+                            <div class="setting-option">
+                                <label>Modo escuro:</label>
+                                <input type="checkbox" id="modoEscuro">
+                            </div>
+                            <div class="setting-option">
+                                <label>Itens por página:</label>
+                                <select id="configItensPagina">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                </select>
+                            </div>
+                            <button class="b" onclick="salvarConfiguracoesUsuario()" style="margin-top: 15px;">
+                                <i class="fas fa-save"></i> Salvar Configurações
+                            </button>
+                        </div>
+
+                        <!-- <div class="setting-card">
+                            <h3><i class="fas fa-database"></i> Gerenciamento de Dados</h3>
+                            <button class="b" onclick="exportarDados()" style="background: #6c757d; margin: 5px;">
+                                <i class="fas fa-download"></i> Exportar Dados
+                            </button>
+                            <button class="b" onclick="importarDados()" style="background: #17a2b8; margin: 5px;">
+                                <i class="fas fa-upload"></i> Importar Dados
+                            </button>
+                            <button class="b" onclick="limparDados()" style="background: #dc3545; margin: 5px;">
+                                <i class="fas fa-trash"></i> Limpar Dados
+                            </button>
+                        </div> -->
+
+                        <!-- <div class="setting-card">
+                            <h3><i class="fas fa-info-circle"></i> Sobre o Sistema</h3>
+                            <p><strong>Versão:</strong> 1.0.0</p>
+                            <p><strong>Desenvolvedor:</strong> Gestor de Estoque</p>
+                            <p><strong>Última atualização:</strong> <span id="dataAtualizacao"></span></p>
+                            <p><strong>Total de produtos:</strong> <span id="infoTotalProdutos">0</span></p> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal para Adicionar Produto -->
+    <div id="modalAddProduct" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalAdd">&times;</span>
+            <h2><i class="fas fa-plus"></i> Adicionar Produto</h2>
+            <form id="formAddProduct">
+                <div class="group">
+                    <label for="productName">Nome do Produto:</label>
+                    <input type="text" id="productName" required>
+                </div>
+                <div class="group">
+                    <label for="productQty">Quantidade:</label>
+                    <input type="number" id="productQty" min="0" required>
+                </div>
+                <div class="group">
+                    <label for="productPrice">Preço (R$):</label>
+                    <input type="number" id="productPrice" step="0.01" min="0.01" required>
+                </div>
+                <div class="group">
+                    <label for="productCategoria">Categoria (opcional):</label>
+                    <input type="text" id="productCategoria">
+                </div>
+                <button type="submit" class="bota">Adicionar Produto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Produto -->
+    <div id="modalEditProduct" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalEdit">&times;</span>
+            <h2><i class="fas fa-edit"></i> Editar Produto</h2>
+            <form id="formEditProduct">
+                <div class="group">
+                    <label for="editName">Nome do Produto:</label>
+                    <input type="text" id="editName" required>
+                </div>
+                <div class="group">
+                    <label for="editQty">Quantidade:</label>
+                    <input type="number" id="editQty" min="0" required>
+                </div>
+                <div class="group">
+                    <label for="editPrice">Preço (R$):</label>
+                    <input type="number" id="editPrice" step="0.01" min="0.01" required>
+                </div>
+                <div class="group">
+                    <label for="editCategoria">Categoria:</label>
+                    <input type="text" id="editCategoria">
+                </div>
+                <button type="submit" class="bota">Atualizar Produto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal para Editar Perfil -->
+    <div id="modalEditProfile" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalProfile">&times;</span>
+            <h2><i class="fas fa-user-edit"></i> Editar Perfil</h2>
+            <form id="formEditProfile">
+                <div class="profile-preview">
+                    <img id="previewFoto" src="img/do-utilizador.png" alt="Preview da foto">
+                </div>
+                <div class="group">
+                    <label for="fotoInput">Foto do Usuário:</label>
+                    <input type="file" id="fotoInput" accept="image/*">
+                </div>
+                <div class="group">
+                    <label for="nomeInput">Nome:</label>
+                    <input type="text" id="nomeInput" required>
+                </div>
+                <div class="group">
+                    <label for="emailInput">E-mail:</label>
+                    <input type="email" id="emailInput">
+                </div>
+                <button type="submit" class="bota">Salvar Perfil</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="editar.js"></script>
+</body>
+</html>

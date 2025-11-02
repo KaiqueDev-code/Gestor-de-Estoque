@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/homestyle.css">
+    <link rel="stylesheet" href="/pagina.css">
+    <link rel="icon" href="/favicon.ico">
+    <title>Dashboard</title>
+    <style>
+.modal {
+    display: none; /* Modal começa escondido */
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.modal-content {
+    background: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 320px;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    right: 16px;
+    top: 8px;
+    font-size: 24px;
+    cursor: pointer;
+}
+.group { margin-bottom: 12px; }
+.bota { background: #007bff; color: #fff; border: none; padding: 8px 18px; border-radius: 4px; cursor: pointer; }
+
+.btn-editar {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-excluir {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+</style>
+</head>
+<body>
+    <header class="topo">
+        <nav class="menu">
+            <ul>
+                <li><a href="/home">Home</a></li>
+                <li><a href="#">Produtos</a></li>
+                <li><a href="#">Relatórios</a></li>
+            </ul>
+        </nav>
+        <div class="usuario">
+            <img src="/img/do-utilizador.png" alt="Usuário" class="icone" id="fotoUsuario">
+            <span class="nome" id="nomeUsuario"><%= nomeUsuario || 'Usuário' %></span>
+            <div class="menu-usuario" id="menuUsuario" style="display:none;">
+                <a href="#" id="btnPerfil">Perfil</a>
+                <a href="/logout">Sair</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="main">
+        <div class="sidebar">
+            <h3>Menu</h3>
+            <a href="#">Relatórios</a>
+            <a href="#">Produtos</a>
+        </div>
+        <div class="content">
+            <div class="sessao">
+                <h2>Dashboard Sale</h2>
+                <p><img src="/img/silhueta-de-icone-de-casa.png" alt="casa" width="13px"> / Dashboard Sale</p>
+            </div>
+            <div class="box-container">
+                <div class="box" style="background-color: #ff7f7f;">
+                    <h4>Total Vendido</h4>
+                    <p id="totalVendido">R$0,00</p>
+                    <img src="/img/money.png" alt="dinheiro" class="icon-card">
+                </div>
+                <div class="box" style="background-color: #7f7fff;">
+                    <h4>Total Lucrado</h4>
+                    <p id="totalLucrado">R$0,00</p>
+                    <img src="/img/money.png" alt="dinheiro" class="icon-card">
+                </div>
+                <div class="box" style="background-color: #20e3b2;">
+                    <h4>Total de Produtos</h4>
+                    <p id="totalProdutos">0</p>
+                    <img src="/img/money.png" alt="dinheiro" class="icon-card">
+                </div>
+            </div>
+            <div class="caixa">
+                <div class="acoes">
+                    <!-- Botão de incluir -->
+                    <button class="b" id="btnIncluir"><i class="ba">Incluir +</i></button>
+
+                    <select id="itensPorPagina">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                    <input type="text" id="pesquisa" placeholder="Pesquisar Produto" class="pesquisa">
+                </div>
+                <table class="tabela" id="tabelaProdutos">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Os itens serão adicionados aqui -->
+                    </tbody>
+                </table>
+                <div id="paginacao" class="paginacao"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal Incluir Produto -->
+    <div id="modalIncluir" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModalIncluir">&times;</span>
+            <h2>Incluir Produto</h2>
+            <form id="form-incluir">
+                <div class="group"><label for="nomeIncluir">Nome:</label><input type="text" id="nomeIncluir" required></div>
+                <div class="group"><label for="quantidadeIncluir">Quantidade:</label><input type="number" id="quantidadeIncluir" required></div>
+                <div class="group"><label for="precoIncluir">Preço:</label><input type="number" id="precoIncluir" step="0.01" required></div>
+                <button type="submit" class="bota">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Editar Produto -->
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModalEditar">&times;</span>
+            <h2>Editar Produto</h2>
+            <form id="form-editar">
+                <div class="group"><label for="nomeEditar">Nome:</label><input type="text" id="nomeEditar" required></div>
+                <div class="group"><label for="precoEditar">Preço:</label><input type="number" id="precoEditar" step="0.01" required></div>
+                <button type="submit" class="bota">Salvar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ícone de usuário -->
+<div id="usuarioPerfil" style="cursor: pointer;">
+    <img src="/path/to/icon.png" alt="Usuário" style="width: 40px; height: 40px; border-radius: 50%;">
+    <span>fulana</span>
+</div>
+
+<!-- Modal para editar perfil -->
+<div id="modalEditarPerfil" class="modal">
+    <div class="modal-content">
+        <span class="close" id="fecharModalEditarPerfil">&times;</span>
+        <h2>Editar Perfil</h2>
+        <form id="form-editar-perfil">
+            <div class="group">
+                <label for="nomePerfil">Nome:</label>
+                <input type="text" id="nomePerfil" value="fulana" required>
+            </div>
+            <div class="group">
+                <label for="emailPerfil">Email:</label>
+                <input type="email" id="emailPerfil" value="fulana@email.com" required>
+            </div>
+            <button type="submit" class="btn-salvar">Salvar</button>
+        </form>
+    </div>
+</div>
+
+    <script src="/editar.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    const tabelaBody = document.querySelector('#tabelaProdutos tbody');
+    const btnIncluir = document.getElementById('btnIncluir');
+    const modalIncluir = document.getElementById('modalIncluir');
+    const fecharModalIncluir = document.getElementById('fecharModalIncluir');
+    const formIncluir = document.getElementById('form-incluir');
+
+    // Abrir modal ao clicar no botão "Incluir +"
+    btnIncluir.onclick = function() {
+        modalIncluir.style.display = 'block';
+    };
+
+    // Fechar modal ao clicar no botão de fechar
+    fecharModalIncluir.onclick = function() {
+        modalIncluir.style.display = 'none';
+    };
+
+    // Fechar modal ao clicar fora do conteúdo
+    window.onclick = function(event) {
+        if (event.target === modalIncluir) {
+            modalIncluir.style.display = 'none';
+        }
+    };
+
+    // Adicionar item à tabela ao enviar o formulário
+    formIncluir.onsubmit = function(e) {
+        e.preventDefault();
+
+        // Obter os valores do formulário
+        const nome = document.getElementById('nomeIncluir').value.trim();
+        const quantidade = document.getElementById('quantidadeIncluir').value.trim();
+        const preco = document.getElementById('precoIncluir').value.trim();
+
+        // Validar os campos
+        if (!nome || !quantidade || !preco) {
+            alert('Preencha todos os campos!');
+            return;
+        }
+
+        // Criar uma nova linha na tabela
+        const novaLinha = document.createElement('tr');
+        novaLinha.innerHTML = `
+            <td>${nome}</td>
+            <td>${quantidade}</td>
+            <td>R$ ${parseFloat(preco).toFixed(2)}</td>
+            <td>
+                <button class="btn-editar">Editar</button>
+                <button class="btn-excluir">Excluir</button>
+            </td>
+        `;
+
+        // Adicionar a nova linha ao corpo da tabela
+        tabelaBody.appendChild(novaLinha);
+
+        // Limpar o formulário e fechar o modal
+        formIncluir.reset();
+        modalIncluir.style.display = 'none';
+
+        // Adicionar funcionalidade aos botões "Editar" e "Excluir"
+        const btnEditar = novaLinha.querySelector('.btn-editar');
+        const btnExcluir = novaLinha.querySelector('.btn-excluir');
+
+        btnEditar.onclick = function() {
+            alert('Funcionalidade de edição ainda não implementada.');
+        };
+
+        btnExcluir.onclick = function() {
+            tabelaBody.removeChild(novaLinha);
+        };
+    };
+});
+</script>
+</body>
+</html>

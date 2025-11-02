@@ -1,0 +1,9 @@
+# Ignorar histórico do VSCode/Extensões
+.history/
+
+# Entradas recomendadas
+node_modules/
+dist/
+.env
+.vs/
+*.log
